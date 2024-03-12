@@ -53,9 +53,13 @@ While linked lists does make better use of memory, the linked nature of the list
 This is due to the fact that while arrays have indexes associated with each item in it, and can be searched for by way of this. Linked lists do not.
 Because of this, searching through a linked list requires iterating through the entire list. Traversing node after node, which can be time consuming.
 
+Furthermore linked lists take up more memory by nature of it's pointers.
+Where arrays instead are easy to traverse as they will always be in the same block of memory, needing no pointers.
+
 ## Which one is best?
 
 As always it's a matter of use case, arrays are plenty sufficient in most cases however. But it's always good to have more options in the tool belt.
+In the end I've come to understand the importance of reviewing a project during development, and weight the pros and cons of different solutions to a problem.
 
 # check it out!
 
