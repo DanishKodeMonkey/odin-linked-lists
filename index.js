@@ -158,6 +158,30 @@ class LinkedList {
 	clear() {
 		this.head = null
 	}
+
+	// Method similar to pop() for arrays, remove the last node of the chain
+	pop() {
+		// set the target of the operation, the tail.
+		let removed = this.tail
+		// if no tail exists
+		if (!this.tail) return undefined
+
+		// if we happened to remove the last item in the list, reset the list head/tail to null
+		if (this.length === 1) {
+			this.head = null
+			this.tail = null
+		}
+
+		// set the tail of the list to the node before the removed node.
+		this.tail = removed.prev
+		// set the new tails next to null (because it is the tail) effectively cutting off the node.
+		this.tail.next = null
+
+		// decrement the length of the list
+		this.length--
+		// return the removed node ( dunno, use it somewhere else? )
+		return removed
+	}
 }
 
 // testing below:
@@ -178,4 +202,7 @@ list1.append(7)
 list1.append(6) // tail
 // null
 
-console.log(list1.at(3)) // 17
+console.log('List1 length at start test ' + list1.length) // 10
+console.log('Find index 3 node ' + list1.at(3)) // 17
+list1.pop()
+console.log('list length after pop() ' + list1.length) // 9
