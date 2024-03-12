@@ -27,6 +27,8 @@ class ListNode {
 		this.data = data
 		// next will be the pointer to the next node in the list
 		this.next = null
+		// prev will be the pointed to the previous node in the list
+		this.prev = null
 	}
 }
 
@@ -46,38 +48,52 @@ class LinkedList {
 
 	// Method for adding a node to the end of the list.
 	append(value) {
-		// Create a new node using the value provided
-		const node = new ListNode(value)
-		// check if the list is currently empty, if so, set both the head and the tail to the new node.
+		// Create a new node using the provided value
+		let node = new ListNode(value)
+
+		// if the list is empty, assign node as new head
 		if (!this.head) {
-			this.head = this.tail = node
-		} else {
-			// if the list is not empty, updadte the next property of the current list node to this new node.
-			this.tail.next = node
-			// update the tail of the linked list to the new node
+			this.head = node
 			this.tail = node
 		}
-		// update the length of the linked list, increment by 1.
+
+		// if list is not empty, add node to tail of list
+		this.tail.next = node
+
+		// set the previous nodes tail to this node
+		node.prev = this.tail
+
+		// set this node to the tail of the list
+		this.tail = node
+
+		// increment hte length of the list
 		this.length++
+
+		// return the list
+		return this
 	}
 
 	// Method for adding a node to the beginning of the list.
 	prepend(value) {
 		// Follows alot of the same process as append()
-		const node = new ListNode(value)
+		let node = new ListNode(value)
 
+		// if the list is empty...
 		if (!this.head) {
-			this.head = this.tail = node
-		} else {
-			// Difference is here:
-			// assign the current head of the list to prevHead
-			let prevHead = this.head
-			// set the new node to be the first after the head
-			this.head.next = node
-			// set the new head nodes link to the previous head node
-			node.next = prevHead
+			this.head = node
+			this.tail = this.head
 		}
+		// if the list is not empty
+		// assign the new node as the node before the current head node
+		this.head.prev = node
+		// assign the old head node as the next node of the new node
+		node.next = this.head
+		// assign the new node as the head node.
+		this.head = node
+
+		//increment the length of the list
 		this.length++
+		return this
 	}
 
 	// method for adding
@@ -116,6 +132,27 @@ class LinkedList {
 		// do this until we reach null, then return null.
 		return lastNode
 	}
+	// method that returns the node of the provided index
+	at(index) {
+		// variable representing the currently selected node
+		let currentNode
+
+		// check for input validity.
+		if (index < 0 || index >= this.length) return undefined
+
+		// now for the actual search:
+		// Since the list is double linked, we can leverage a split search approach.
+		// So we will use for/ while loops to search from either the head or tail of the list.
+		// this halves the search time effectively
+		if (index <= this.length / 2) {
+			currentNode = this.head
+			for (let i = 0; i < index; i++) currentNode = currentNode.next
+		} else {
+			currentNode = this.tail
+			for (let i = this.length; i > index; i--) currentNode = currentNode.prev
+		}
+		return currentNode.data
+	}
 
 	// method to clear the linked list, cutting the link so to speak.
 	clear() {
@@ -125,22 +162,20 @@ class LinkedList {
 
 // testing below:
 
-// create nodes
-let node1 = new ListNode(2)
-let node2 = new ListNode(8)
+//create list
 
-// link node 1 to node 2 with next pointer
-node1.next = node2
+list1 = new LinkedList()
 
-// create a linked list with node1
-let list1 = new LinkedList(node1)
+list1.append(4) // head, index 0
+list1.append(2) // index 1
+list1.append(8) // index 2
+list1.append(17) // index 3
+list1.append(20)
+list1.append(1)
+list1.append(3)
+list1.append(14)
+list1.append(7)
+list1.append(6) // tail
+// null
 
-// Resulting list:
-console.log(list1) // LinkedList {head: ListNode { data: 2, next: ListNode { data: 8, next: null } }}
-
-// Look familiar? See the visual representation of what we were going for in the start of this file.
-
-// Can also dig through the linked list to get some specific data:
-console.log(list1.head.next.data) // 8
-
-console.log(list1.getLast()) // ListNode { data: 8, next: null }
+console.log(list1.at(3)) // 17
