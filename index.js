@@ -165,6 +165,18 @@ class LinkedList {
 		return false
 	}
 
+	find(value) {
+		if (!this.head) return -1 // return -1 if list is empty.
+		let currentNode = this.head // start counting from first node.
+		let index = 0 // start counting index at 0
+
+		while (currentNode) {
+			if (currentNode.data === value) return index
+			currentNode = currentNode.next
+			index++ // increment index for each iteration
+		}
+		return null
+	}
 	// method to clear the linked list, cutting the link so to speak.
 	clear() {
 		this.head = null
@@ -218,3 +230,4 @@ console.log('Find index 3 node ' + list1.at(3)) // 17
 list1.pop()
 console.log('list length after pop() ' + list1.length) // 9
 console.log('did the list contain the value 14? ' + list1.contains(14)) // true
+console.log('What is the index of value 7? ' + list1.find(7))
