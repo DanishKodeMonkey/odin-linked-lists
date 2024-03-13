@@ -151,7 +151,18 @@ class LinkedList {
 			currentNode = this.tail
 			for (let i = this.length; i > index; i--) currentNode = currentNode.prev
 		}
-		return currentNode.data
+		return currentNode
+	}
+	// Much like at, but returns true if the value exist in the linked list.
+	contains(value) {
+		if (!this.head) return null
+		let currentNode = this.head
+
+		while (currentNode) {
+			if (currentNode.data === value) return true
+			currentNode = currentNode.next
+		}
+		return false
 	}
 
 	// method to clear the linked list, cutting the link so to speak.
@@ -206,3 +217,4 @@ console.log('List1 length at start test ' + list1.length) // 10
 console.log('Find index 3 node ' + list1.at(3)) // 17
 list1.pop()
 console.log('list length after pop() ' + list1.length) // 9
+console.log('did the list contain the value 14? ' + list1.contains(14)) // true
