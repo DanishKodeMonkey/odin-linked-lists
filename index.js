@@ -153,30 +153,7 @@ class LinkedList {
 		}
 		return currentNode
 	}
-	// Much like at, but returns true if the value exist in the linked list.
-	contains(value) {
-		if (!this.head) return null
-		let currentNode = this.head
 
-		while (currentNode) {
-			if (currentNode.data === value) return true
-			currentNode = currentNode.next
-		}
-		return false
-	}
-
-	find(value) {
-		if (!this.head) return -1 // return -1 if list is empty.
-		let currentNode = this.head // start counting from first node.
-		let index = 0 // start counting index at 0
-
-		while (currentNode) {
-			if (currentNode.data === value) return index
-			currentNode = currentNode.next
-			index++ // increment index for each iteration
-		}
-		return null
-	}
 	// method to clear the linked list, cutting the link so to speak.
 	clear() {
 		this.head = null
@@ -205,6 +182,72 @@ class LinkedList {
 		// return the removed node ( dunno, use it somewhere else? )
 		return removed
 	}
+	// Much like at, but returns true if the value exist in the linked list.
+	contains(value) {
+		if (!this.head) return null
+		let currentNode = this.head
+
+		while (currentNode) {
+			if (currentNode.data === value) return true
+			currentNode = currentNode.next
+		}
+		return false
+	}
+
+	// method for finding the node containing the provided value.
+	find(value) {
+		if (!this.head) return -1 // return -1 if list is empty.
+		let currentNode = this.head // start counting from first node.
+		let index = 0 // start counting index at 0
+
+		while (currentNode) {
+			if (currentNode.data === value) return index
+			currentNode = currentNode.next
+			index++ // increment index for each iteration
+		}
+		return null
+	}
+	toString() {
+		if (!this.head) return null
+		let currentNode = this.head
+		let str = ''
+		while (currentNode) {
+			str += currentNode.data + ' '
+			currentNode = currentNode.next
+		}
+		return str
+	}
+
+	// much like prepend and append, but with a specific part of the chain provided
+	// This method is very much a mix of alot of the above methods in terms of checks
+	insertAt(value, index) {
+		let node = new NodeList(value)
+		let currentNode
+
+		// if the list is empty, just assign the new node as the head.
+		if (!this.head) {
+			this.head = node
+			this.tail = node
+		}
+
+		// Check for valid index provided
+		if (index < 0 || index >= this.length) return undefined
+
+		// Search for the provided index
+		if (index <= this.length / 2) {
+			currentNode = this.head
+			for (let i = 0; i < index; i++) currentNode = currentNode.next
+		} else {
+			currentNode = this.tail
+			for (let i = this.length; i > index; i--) currentNode = currentNode.prev
+		}
+		// figure out the next node of the current node
+		let nextNode = currentNode.next
+		// append the current node with the new node
+		currentNode.next = node
+		// append the new node, with current nodes previous next node ( sorry for this sentence )
+		node.next = nextNode
+	}
 }
 
 // testing below:
@@ -231,3 +274,6 @@ list1.pop()
 console.log('list length after pop() ' + list1.length) // 9
 console.log('did the list contain the value 14? ' + list1.contains(14)) // true
 console.log('What is the index of value 7? ' + list1.find(7))
+console.log('The linked list as string: ' + list1.toString())
+list1.insertAt(69, 5)
+console.log(' list after insertAt: ' + list1)
