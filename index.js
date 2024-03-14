@@ -19,6 +19,8 @@ const list = {
 };
 */
 
+// TODO: Optimise process by making functions for repeated code blocks (e.g. finding a node index)
+
 // class constructor for a the nodes of the list
 
 class ListNode {
@@ -221,7 +223,7 @@ class LinkedList {
 	// much like prepend and append, but with a specific part of the chain provided
 	// This method is very much a mix of alot of the above methods in terms of checks
 	insertAt(value, index) {
-		let node = new NodeList(value)
+		let node = new ListNode(value)
 		let currentNode
 
 		// if the list is empty, just assign the new node as the head.
@@ -243,10 +245,50 @@ class LinkedList {
 		}
 		// figure out the next node of the current node
 		let nextNode = currentNode.next
+
 		// append the current node with the new node
 		currentNode.next = node
+
 		// append the new node, with current nodes previous next node ( sorry for this sentence )
 		node.next = nextNode
+		// set the new nodes previous node to the currentNode
+		node.prev = currentNode
+
+		// increment the length of the list
+		this.length++
+
+		// return the new list
+		return this
+	}
+	removeAt(index) {
+		// the node we traverse the list with
+		let currentNode
+		// First some checks as usual for validity
+		if (!this.head) return null
+
+		if (index < 0 || index >= this.length) return undefined
+
+		// now, just like insertAt, but cut a node off.
+		// find the given index
+		if (index <= this.length / 2) {
+			currentNode = this.head
+			for (let i = 0; i < index; i++) currentNode = currentNode.next
+		} else {
+			currentNode = this.tail
+			for (let i = this.length; i > index; i--) currentNode = currentNode.prev
+		}
+
+		// Fetch the previous node before this one
+		let prevNode = currentNode.prev
+
+		// and the next one after it
+		let nextNode = currentNode.next
+
+		// Tie the two neighbouring nodes together, cutting off the currentNode
+		prevNode.next = nextNode
+
+		// decrement length of list
+		this.length--
 	}
 }
 
@@ -276,4 +318,6 @@ console.log('did the list contain the value 14? ' + list1.contains(14)) // true
 console.log('What is the index of value 7? ' + list1.find(7))
 console.log('The linked list as string: ' + list1.toString())
 list1.insertAt(69, 5)
-console.log(' list after insertAt: ' + list1)
+console.log(' list after insertAt at index 5 input 69: ' + list1)
+list1.removeAt(5)
+console.log('list after removing index 5(69) ' + list1)
